@@ -5,6 +5,16 @@
 #include <fstream>
 #include <cstdlib>
 
+void net(std::string command){
+  std::cout << command << ": command not found" << std::endl;
+}
+
+//            4.
+void history(std::string command){
+  std::ofstream file("kubsh_history", std::ios::app);
+  file << command << std::endl;
+}
+
 int main() {
   // Flush after every std::cout / std:cerr
   std::cout << std::unitbuf;
@@ -22,16 +32,18 @@ int main() {
       case 'e':
         //         5.
         if(command == "echo"){
+          history("echo");
           std::string message;
           std::getline(std::cin, message);
           std::cout << message << std::endl;
         }
-        else std::cout << command << ": command not found" << std::endl;
+        else net(command);
         break;
 
       case 'p':
         //         6.
         if (command == "print"){
+          history("print");
           std::string message;
           std::getline(std::cin, message);
 
@@ -58,17 +70,39 @@ int main() {
           }
             */
         }
-        else std::cout << command << "command not found" << std::endl;
+        
+        else if (command == "print_history"){
+          std::ifstream file("kubsh_history");
+          std::string command;
+          while (!file.eof() && file >> command)
+            std::cout << command << std::endl;
+          history("print_history");
+        }
+
+        else net(command);
         break;
 
       case '\\':
         //          3.
-        if (command == "\\q") return 0;
-        else std::cout << command << ": command not found" << std::endl;
+        if (command == "\\q") {
+          history("\\q");
+          return 0;
+        }
+        else net(command);
+        break;
+      
+      case 'c':
+        if (command == "clear_history"){
+          if (std::remove("kubsh_history") == 0)
+            std::cout << "History cleared!" << std::endl;
+          else
+            std::cout << "No history file found!" << std::endl;
+        }
+        else net(command);
         break;
 
       default:
-        std::cout << command << ": command not found" << std::endl;
+        net(command);
         break;
     }
   }
