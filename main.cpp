@@ -27,12 +27,14 @@ int main() {
     std::cout << "$ ";
     std::cin >> command;
 
+    if (command != "print_history" && command != "clear_history")
+      history(command);
+
     switch(command[0]){
 
       case 'e':
         //         5.
         if(command == "echo"){
-          history("echo");
           std::string message;
           std::getline(std::cin, message);
           std::cout << message << std::endl;
@@ -43,7 +45,6 @@ int main() {
       case 'p':
         //         6.
         if (command == "print"){
-          history("print");
           std::string message;
           std::getline(std::cin, message);
 
@@ -60,15 +61,6 @@ int main() {
             }
             usleep(100000);
           }
-        
-            /*
-          while (true){
-            std::cout << message << std::endl;
-            char c;
-            if (read(STDIN_FILENO, &c, 1) == 0) break;
-            usleep(100000);
-          }
-            */
         }
         
         else if (command == "print_history"){
@@ -80,7 +72,6 @@ int main() {
             while (std::getline(file, command))
               std::cout << command << std::endl;
           }
-          history("print_history");
         }
 
         else net(command);
@@ -89,7 +80,6 @@ int main() {
       case '\\':
         //          3.
         if (command == "\\q") {
-          history("\\q");
           return 0;
         }
         else net(command);
