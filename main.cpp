@@ -2,6 +2,8 @@
 #include <string>
 #include <sys/select.h>
 #include <unistd.h>
+#include <fstream>
+#include <cstdlib>
 
 int main() {
   // Flush after every std::cout / std:cerr
@@ -16,8 +18,9 @@ int main() {
     std::cin >> command;
 
     switch(command[0]){
-      case 'e':
 
+      case 'e':
+        //         5.
         if(command == "echo"){
           std::string message;
           std::getline(std::cin, message);
@@ -27,6 +30,7 @@ int main() {
         break;
 
       case 'p':
+        //         6.
         if (command == "print"){
           std::string message;
           std::getline(std::cin, message);
@@ -58,6 +62,7 @@ int main() {
         break;
 
       case '\\':
+        //          3.
         if (command == "\\q") return 0;
         else std::cout << command << ": command not found" << std::endl;
         break;
