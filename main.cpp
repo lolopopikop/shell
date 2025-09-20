@@ -20,7 +20,7 @@ int main() {
   std::cout << std::unitbuf;
   std::cerr << std::unitbuf;
 
-  std::string command;
+  std::string command, full_command;
 
   while(true){
 
@@ -73,9 +73,13 @@ int main() {
         
         else if (command == "print_history"){
           std::ifstream file("kubsh_history");
-          std::string command;
-          while (!file.eof() && file >> command)
-            std::cout << command << std::endl;
+          if (!file)
+            std::cout << "No history yet!" << std::endl;
+          else{
+            std::string command;
+            while (std::getline(file, command))
+              std::cout << command << std::endl;
+          }
           history("print_history");
         }
 
